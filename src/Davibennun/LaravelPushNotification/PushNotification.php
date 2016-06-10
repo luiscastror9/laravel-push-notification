@@ -4,13 +4,19 @@ class PushNotification {
 
     public function app($appName)
     {
-        $config = is_array($appName) ? $appName : \Config::get('laravel-push-notification::'.$appName);
+        $config = is_array($appName) ? $appName : config('push-notification.'.$appName);
         return new App($config);
     }
 
     public function Message()
     {
       $instance = (new \ReflectionClass('Sly\NotificationPusher\Model\Message'));
+        return $instance->newInstanceArgs(func_get_args());
+    }
+
+ public function Notification()
+    {
+      $instance = (new \ReflectionClass('Sly\NotificationPusher\Model\Notification'));
         return $instance->newInstanceArgs(func_get_args());
     }
 
