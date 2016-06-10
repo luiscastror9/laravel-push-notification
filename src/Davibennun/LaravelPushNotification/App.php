@@ -3,6 +3,7 @@
 use Sly\NotificationPusher\PushManager,
     Sly\NotificationPusher\Model\Device,
     Sly\NotificationPusher\Model\Message,
+	 Sly\NotificationPusher\Model\Notification,
     Sly\NotificationPusher\Model\Push;
 
 class App {
@@ -28,6 +29,15 @@ class App {
 
     public function send($message, $options = array()) {
         $push = new Push($this->adapter, $this->addressee, ($message instanceof Message) ? $message : new Message($message, $options));
+
+        $this->pushManager->add($push);
+        
+        $this->pushManager->push();
+
+        return $this;
+    }
+public function sendNotification($notification, $options = array()) {
+        $push = new Push($this->adapter, $this->addressee, ($notification instanceof Notification) ? $notification : new Notification($notification, $options));
 
         $this->pushManager->add($push);
         
